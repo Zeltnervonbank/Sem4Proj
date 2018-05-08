@@ -6,6 +6,6 @@
 int main(void)
 {
     int i = 2;
-    int j = 3;
+    int j = 4;
 	return 0;
 }
