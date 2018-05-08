@@ -34,6 +34,17 @@ static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
 
+//*****************************************************************************
+//
+// Forward declaration of FreeRTOS handlers.
+//
+//*****************************************************************************
+void vPortSVCHandler( void ) __attribute__ (( naked ));
+void xPortPendSVHandler( void ) __attribute__ (( naked ));
+void xPortSysTickHandler( void );
+
+
+
 #ifndef HWREG
 #define HWREG(x) (*((volatile uint32_t *)(x)))
 #endif
@@ -81,11 +92,11 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // SVCall handler
+    vPortSVCHandler,                        // FreeRTOS SVCall Handler
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
-    IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    xPortPendSVHandler,                     // FreeRTOS PendSV Handler
+    xPortSysTickHandler,                    // FreeRTOS SysTick Handler
     IntDefaultHandler,                      // GPIO Port A
     IntDefaultHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C

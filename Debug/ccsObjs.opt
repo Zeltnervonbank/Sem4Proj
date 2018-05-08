@@ -1,1 +1,1 @@
-"./main.o" "./tm4c123gh6pm_startup_ccs_gcc.o" -Wl,-T"../tm4c123gh6pm.lds" 
+"./device.o" "./digiswitch.o" "./display.o" "./gpio.o" "./lcd.o" "./led.o" "./main.o" "./status_led.o" "./string.o" "./systick_frt.o" "./tm4c123gh6pm_startup_ccs_gcc.o" "./FreeRTOS/Source/croutine.o" "./FreeRTOS/Source/list.o" "./FreeRTOS/Source/queue.o" "./FreeRTOS/Source/tasks.o" "./FreeRTOS/Source/portable/GCC/ARM_CM4/common.o" "./FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" "./FreeRTOS/Source/portable/MemMang/heap_2.o" -Wl,-T"../tm4c123gh6pm.lds" 
