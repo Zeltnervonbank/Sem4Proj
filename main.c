@@ -3,7 +3,9 @@
 /**
  * main.c
  */
-#define DILLER 2;
+#define DILLER 4
+#define EGERN 2
+
 int main(void)
 {
     int i = 2;
