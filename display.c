@@ -25,7 +25,6 @@
 #include "queue.h"
 #include "semphr.h"
 #include "emp_type.h"
-#include "digiswitch.h"
 #include "lcd.h"
 #include "device.h"
 #include "string.h"
@@ -41,33 +40,7 @@ INT16S counter = 0;
 INT16S angle = 0;
 
 /*****************************   Functions   *******************************/
-void angle_task(void * vParameters)
-{
-    INT8U event;
-    while(1)
-    {
-        if(xQueueReceive(digi_queue, &event, 10))
-        {
-            switch(event)
-            {
-            case CLOCKWISE:
-                counter++;
-                angle = counter * 6;
-                break;
-            case C_CLOCKWISE:
-                counter--;
-                angle = counter *6;
-                break;
-            case RESET:
-                counter = 0;
-                angle = 0;
-            default:
-                break;
-            }
-            xSemaphoreGive(display_signal);
-        }
-    }
-}
+
 
 void display_task(void * vParameters)
 {

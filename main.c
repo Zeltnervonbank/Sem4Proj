@@ -27,9 +27,7 @@
 #include "queue.h"
 #include "semphr.h"
 #include "status_led.h"
-#include "digiswitch.h"
 #include "gpio.h"
-#include "led.h"
 #include "lcd.h"
 #include "device.h"
 #include "string.h"
@@ -108,10 +106,8 @@ int main(void)
     // Start the tasks.
     // ----------------
     return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) "Status_led", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-    return_value &= xTaskCreate( digiswitch_task, ( signed portCHAR * ) "Digiswitch", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
     //return_value &= xTaskCreate(led_task, ( signed portCHAR * ) "LED", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
     return_value &= xTaskCreate(lcd_task, (signed portCHAR * ) "LCD", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL);
-    return_value &= xTaskCreate(angle_task, (signed portCHAR * ) "Angle", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL);
     return_value &= xTaskCreate(display_task, (signed portCHAR * ) "Display", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL);
 
     if (return_value != pdTRUE)
