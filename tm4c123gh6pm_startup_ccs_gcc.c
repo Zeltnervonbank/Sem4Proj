@@ -39,9 +39,9 @@ static void IntDefaultHandler(void);
 // Forward declaration of FreeRTOS handlers.
 //
 //*****************************************************************************
-void vPortSVCHandler( void ) __attribute__ (( naked ));
-void xPortPendSVHandler( void ) __attribute__ (( naked ));
-void xPortSysTickHandler( void );
+extern void vPortSVCHandler( void );
+extern void xPortPendSVHandler( void );
+extern void xPortSysTickHandler( void );
 
 
 

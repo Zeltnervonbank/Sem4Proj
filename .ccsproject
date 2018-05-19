@@ -7,11 +7,10 @@
 	<deviceEndianness value="little"/>
 	<codegenToolVersion value="GNU_6.3.1:Linaro"/>
 	<isElfFormat value="true"/>
-	<connection value="common/targetdb/connections/Stellaris_ICDI_Connection.xml"/>
 	<linkerCommandFile value="tm4c123gh6pm.lds"/>
 	<rts value="libc.a"/>
 	<createSlaveProjects value=""/>
 	<templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate_gnu_arm,"/>
 	<filesToOpen value="main.c,"/>
-	<isTargetManual value="true"/>
+	<isTargetManual value="false"/>
 </projectOptions>

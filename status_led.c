@@ -25,8 +25,6 @@
 #include "queue.h"
 #include "semphr.h"
 #include "emp_type.h"
-//#include "glob_def.h"
-//#include "binary.h"
 #include "status_led.h"
 
 
@@ -46,7 +44,6 @@ void status_led_init(void)
 *   Function : 	
 *****************************************************************************/
 {
-  INT8S dummy;
   // Enable the GPIO port that is used for the on-board LED.
   SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 
