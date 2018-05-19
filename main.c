@@ -40,6 +40,9 @@
 
 /*****************************   Variables   *******************************/
 
+xQueueHandle q_uart_tx;
+xQueueHandle q_uart_rx;
+
 
 /*****************************   Functions   *******************************/
 
@@ -67,8 +70,20 @@ static void setupHardware(void)
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
     init_shit();
+    uart0_init();
 
 
+}
+
+void task_ui(void* cparameter){
+    INT8U ch;
+    while(1){
+        if(xQueueRecieve(q_uart_rx, &ch, 0)){
+            xQueueSend(q_uart_tx, &ch, 0);
+        }else{
+            taskYield();
+        }
+    }
 }
 
 
@@ -87,14 +102,19 @@ int main(void)
 
     //Setup Queues.
     //-----------------
+    q_uart_tx = vQueueCreate(8, sizeof(INT8U));
+    q_uart_rx = vQueueCreate(8, sizeof(INT8U));
 
     //Setup Semaphores.
     //-----------------
 
     // Start the tasks.
     // ----------------
-    return_value &= xTaskCreate( float_task, "Float_LED", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+    //return_value &= xTaskCreate( float_task, "Float_LED", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
     return_value &= xTaskCreate( status_led_task, "Status_led", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+    return_value &= xTaskCreate( task_uart_tx, "Uart tx", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+    return_value &= xTaskCreate( task_uart_rx, "Uart rx", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+    return_value &= xTaskCreate( task_ui, "UI", USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
 
     if (return_value != pdTRUE)
     {

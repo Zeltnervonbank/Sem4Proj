@@ -1,47 +1,35 @@
 #include "emp_type.h"
 #include <stdio.h>
 #include "tm4c123gh6pm.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
 
-void init_UART()
-{
-    SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOA;
-
-    SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART0;
-
-    //343
-    SYSCTL_RCGCUART_R |= (1<<0);
-
-    //339
-    SYSCTL_RCGCGPIO_R |= (1<<0);
-
-    //669
-    GPIO_PORTA_AFSEL_R = (1<<1) | (1<<0);
-
-    //686
-    GPIO_PORTA_PCTL_R = (1<<0) | (1<<4);
-
-
-    GPIO_PORTA_DEN_R = (1<<0) | (1<<4);
-
-    //916
-    UART0_CTL_R &= ~(1<<0);
-
-    //912
-    UART0_IBRD_R = 104;
-
-    //913
-    UART0_FBRD_R = 11;
-
-    //914
-    UART0_LCRH_R = (0x3<<5);
-
-    //937
-    UART0_CC_R = 0x0;
-
-    UART0_CTL_R = (1<<0) | (1<<8) | (1<<9);
-
+void task_uart_rx(void* vparameter ){
+    while(1){
+        if(rx_rdy){
+            INT8U data =  read_Char_Blocking();
+            xQueueSend(q_uart_rx, &data, 0);
+        }else{
+            taskYield();
+        }
+    }
 }
+
+void task_uart_tx(void* vparameter ){
+    INT8U ch;
+    while(1){
+        if(xQueueRecieve(q_uart_tx, &ch, 0)){
+            //INT8U data =  read_Char_Blocking();
+            printChar(ch);
+        }else{
+            taskYield();
+        }
+    }
+}
+
 
 void printChar(INT8U c)
 {
@@ -64,6 +52,7 @@ void printString(INT8U * string)
         printChar(*(string++));
     }
 }
+
 INT8U rx_rdy(){
     return (UART0_FR_R & (1<<4)) == 0; //Checks if the UART
 }
