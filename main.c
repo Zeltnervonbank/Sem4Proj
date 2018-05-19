@@ -26,7 +26,7 @@
 #include "queue.h"
 #include "semphr.h"
 #include "status_led.h"
-
+#include "uart0.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -70,7 +70,7 @@ static void setupHardware(void)
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
     init_shit();
-    uart0_init();
+    uart0_init(9600);
 
 
 }
@@ -78,10 +78,10 @@ static void setupHardware(void)
 void task_ui(void* cparameter){
     INT8U ch;
     while(1){
-        if(xQueueRecieve(q_uart_rx, &ch, 0)){
+        if(xQueueReceive(q_uart_rx, &ch, 0)){
             xQueueSend(q_uart_tx, &ch, 0);
         }else{
-            taskYield();
+            //taskYield();
         }
     }
 }
@@ -102,8 +102,8 @@ int main(void)
 
     //Setup Queues.
     //-----------------
-    q_uart_tx = vQueueCreate(8, sizeof(INT8U));
-    q_uart_rx = vQueueCreate(8, sizeof(INT8U));
+    q_uart_tx = xQueueCreate(8, sizeof(INT8U));
+    q_uart_rx = xQueueCreate(8, sizeof(INT8U));
 
     //Setup Semaphores.
     //-----------------
@@ -155,6 +155,7 @@ void float_task(void *pvParameters)
 
 void init_shit(void)
 {
+    INT8U dummy;
     // Enable the GPIO port that is used for the on-board LED.
     SYSCTL_RCGC2_R  =  SYSCTL_RCGC2_GPIOA |SYSCTL_RCGC2_GPIOC | SYSCTL_RCGC2_GPIOD | SYSCTL_RCGC2_GPIOE |SYSCTL_RCGC2_GPIOF;
     SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART0;

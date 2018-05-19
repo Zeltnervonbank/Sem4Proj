@@ -5,6 +5,7 @@
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "uart0.h"
 
 
 void task_uart_rx(void* vparameter ){
@@ -21,11 +22,11 @@ void task_uart_rx(void* vparameter ){
 void task_uart_tx(void* vparameter ){
     INT8U ch;
     while(1){
-        if(xQueueRecieve(q_uart_tx, &ch, 0)){
+        if(xQueueReceive(q_uart_tx, &ch, 0)){
             //INT8U data =  read_Char_Blocking();
             printChar(ch);
         }else{
-            taskYield();
+            //taskYield();
         }
     }
 }

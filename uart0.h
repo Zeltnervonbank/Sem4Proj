@@ -4,6 +4,10 @@
  *  Created on: 11. maj 2018
  *      Author: aszel
  */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
 #ifndef UART0_H_
 #define UART0_H_

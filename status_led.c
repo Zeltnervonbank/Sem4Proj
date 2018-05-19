@@ -48,6 +48,7 @@ void status_led_init(void)
   SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 
   // Do a dummy read to insert a few cycles after enabling the peripheral.
+  INT8U dummy;
   dummy = SYSCTL_RCGC2_R;
 
   GPIO_PORTD_DIR_R |= 0x40;
